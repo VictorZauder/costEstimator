@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shipping Cost Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f4f4f9;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+        .container h1 {
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 24px;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        .btn:hover {
+            background: #0056b3;
+        }
+        .result {
+            margin-top: 15px;
+            font-size: 16px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Shipping Cost Calculator</h1>
+        <div class="form-group">
+            <label for="weight">Weight (kg):</label>
+            <input type="number" id="weight" placeholder="Enter weight" min="0" required>
+        </div>
+        <div class="form-group">
+            <label for="height">Height (m):</label>
+            <input type="number" id="height" placeholder="Enter height" min="0" required>
+        </div>
+        <div class="form-group">
+            <label for="length">Length (m):</label>
+            <input type="number" id="length" placeholder="Enter length" min="0" required>
+        </div>
+        <div class="form-group">
+            <label for="width">Width (m):</label>
+            <input type="number" id="width" placeholder="Enter width" min="0" required>
+        </div>
+        <button class="btn" onclick="calculateCost()">Calculate</button>
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        function calculateCost() {
+            const weight = parseFloat(document.getElementById('weight').value);
+            const height = parseFloat(document.getElementById('height').value);
+            const length = parseFloat(document.getElementById('length').value);
+            const width = parseFloat(document.getElementById('width').value);
+
+            if (isNaN(weight) || isNaN(height) || isNaN(length) || isNaN(width)) {
+                document.getElementById('result').innerText = "Please enter valid numbers for all fields.";
+                return;
+            }
+
+            const volume = height * length * width; // Volume in m³
+            const volumeWeight = volume * 166.667; // Dimensional weight
+            const usedWeight = Math.max(weight, volumeWeight); 
+            const weightLb = usedWeight / 0.45;
+            const handling = weightLb * 0.65;
+            const fee = weightLb * 4.5;
+            const cost = handling + fee;
+
+            document.getElementById('result').innerText = `Estimated Shipping Cost: $${cost.toFixed(2)}`;
+        }
+    </script>
+</body>
+</html>
